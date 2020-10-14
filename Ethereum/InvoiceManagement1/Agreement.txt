@@ -1,0 +1,57 @@
+pragma solidity >=0.4.0 <0.6.0;
+
+contract Agreement{
+    
+       //Defining the Components and its Properties
+       
+       string public SKU_name;
+       string public  SKU_Code;
+       uint public   SKU_Price;
+       
+       /*SKU_CreditPeriod variable defines the time limit within which the supplier should
+         receive the money from the manufacturer.*/
+       uint  public SKU_CreditPeriod = now + 30 days;
+       
+       uint  public SKU_numberOfComponents;       
+       uint internal payment;
+   
+     
+     
+    //Setting the component member vlaues using setterSKU() function
+    
+    function setterSKU(string _SKU_name, string   _SKU_Code,uint   _SKU_Price,uint _SKU_numberOfComponents)  internal{
+        
+        SKU_name = _SKU_name;
+        SKU_Code = _SKU_Code;
+        SKU_Price= _SKU_Price;
+        SKU_numberOfComponents = _SKU_numberOfComponents;
+    } 
+    
+    //retrieving the component member values using getterSKU() function
+    
+    function getterSKU()internal view  returns(string,string,uint,uint) {
+        
+        return (SKU_name,SKU_Code,SKU_Price,SKU_numberOfComponents);
+       
+    }
+    
+    
+    //Calculating the payment value of the total Purchase Order
+    
+    function paymentSKU() public view returns (uint){
+         
+        payment = SKU_Price * SKU_numberOfComponents;
+        return payment;
+        
+    }
+    
+    //setting the condition for the date limit to deliver the goods
+    
+    function deliveryDate(uint _date)  returns (bool) {
+        require(_date <= SKU_CreditPeriod);
+        return true;
+    }
+    
+    
+    
+}

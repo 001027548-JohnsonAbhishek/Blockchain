@@ -1,0 +1,63 @@
+pragma solidity >=0.4.0 <0.6.0;
+
+import "./Agreement.sol";
+
+//Contract to generate PurchaseOrder
+contract PurchaseOrder is Agreement{
+    
+    address internal manufacturer; 
+    
+    //Track the status of the invoice
+    string public status; 
+    
+    //Setting the address of the manufacturer with constructor
+    
+    constructor() public payable{
+        
+        manufacturer = msg.sender;
+        
+    }
+    
+    //To limit the access of set_PurchaseOrder() function to only to manufacturer
+    modifier onlyPurchaser(){
+        
+       require(manufacturer == msg.sender);
+        _;
+        
+    }
+    
+    //Defining the struct for the purchaseOrder
+     
+    struct  purchaseOrder{
+        uint purchaseOrder_number;
+        uint po_date;
+        }
+         
+         //mapping the manufacturer address to the purchaseOrder
+         mapping(address => purchaseOrder) internal p_order;
+        
+        /*Setting the vlaues for purchaseOrder_number and purshaseOrder Date
+          then checking if the purchaseOrder date is less than the delivery order 
+          Passing the skuComponent values using setterSKU() 
+          Retrieving the skuComponent values using the getterSKU()
+        */
+        function generatePurchaseOrder() public onlyPurchaser{
+            uint rand =1;
+            
+            p_order[manufacturer].purchaseOrder_number = uint(keccak256(msg.sender,rand));
+            rand++;
+            
+            p_order[manufacturer].po_date =now;
+            
+            require(deliveryDate( p_order[manufacturer].po_date));
+               
+            setterSKU("CAR","1efg34",100,3);
+            
+            getterSKU();
+            
+            //paymentSKU();
+            status = "PO ISSUED";
+        
+            
+        }
+}

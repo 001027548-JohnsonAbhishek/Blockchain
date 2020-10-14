@@ -1,0 +1,39 @@
+pragma solidity >=0.4.0 <0.6.0;
+
+import "./DeliveryOrder.sol";
+
+//Contract to generate Invoice
+contract Invoice is DeliveryOrder{
+    
+
+    //Stores the Invoice Details
+    struct _invoice{
+        
+        uint invoice_number;
+        uint ref_do_number;
+        uint invoice_date;
+        
+    }
+       
+    //Maps the invoice details from the supplier to the manufacturer
+    mapping(address => mapping (address => _invoice)) public invoice;
+    
+    //issueInvoice() generates the details of the invoice
+   
+    function issueInvoice() public{
+        
+        uint rand =1;
+        invoice[supplier][manufacturer].invoice_number= uint(keccak256(msg.sender,rand));
+        rand++;
+        
+        //Sets the reference DO_Number in the invoice to the DO Number in the contract Delivery Order
+        invoice[supplier][manufacturer].ref_do_number = d_order[manufacturer][supplier].deliveryorder_number;
+        
+        invoice[supplier][manufacturer].invoice_date = now;
+        
+        //This function paymentSKU() generates the total amount to be paid by manufacturer to the supplier
+        paymentSKU();
+        
+        status ="Invoice Issued ";    
+    }
+}

@@ -1,0 +1,68 @@
+pragma solidity >=0.4.0 <0.6.0;
+
+import "./PurchaseOrder.sol";
+
+//Contract to generate Delvery Order
+
+contract DeliveryOrder is PurchaseOrder{
+    
+        address  supplier;
+        
+        //DKU_numberOfComponents variable repressents the number of Components that supplier can deliver
+        uint  public DKU_numberOfComponents = 10000;
+
+        struct deliveryOrder
+        { 
+          uint delivery_Date;
+          uint deliveryorder_number;
+            
+        }
+        
+        //To limit the access of generateDeliveryOrder() function to only to manufacturer
+        
+        modifier onlySupplier(){
+           
+           supplier = msg.sender;
+            _;
+        }
+         
+         
+         //Mapping b/w the manufacturer and supplier to capture the details of the DeliveryOrder
+         mapping(address => mapping ( address=> deliveryOrder)) internal d_order;
+         
+         
+         //Setting the address of the Supplier using constructor
+         constructor() public{
+             supplier = msg.sender;
+         }
+        
+          /*  generateDeliveryOrder() function calls the checkStocks() to check if there are sufficient number of Components
+              Then we set the  values for the member variables of the DeliverOrder struct
+              Then change the status only if enough stocks are available
+          */
+          
+          function generateDeliveryOrder() public onlySupplier {
+             
+            //checks if the supplier has enough stocks to deliver
+            require(checkStocks());
+            
+            d_order[supplier][manufacturer].delivery_Date = now;
+            uint rand = 1;
+            d_order[supplier][manufacturer].deliveryorder_number = uint(keccak256(msg.sender,rand));
+            rand++;         
+            
+            status = "DO Issued";
+          
+        }
+        
+       
+       //Function to check the sufficient number of Components
+       
+       function checkStocks() returns (bool)
+       
+       { 
+           require(SKU_numberOfComponents <= 1000);
+           DKU_numberOfComponents-=DKU_numberOfComponents;
+           return true;
+       }
+}
