@@ -1,0 +1,234 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Swagger - Invoice Management System.",
+        "version": "1.0.0",
+        "title": "Invoice Management System",
+        
+        "contact": {
+            "email": ""
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/tfbc",
+    
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/issueInvoice": {
+            "post": {
+                
+                "summary": "Issue Invoice",
+                "description": "Issue Invoice",
+                "operationId": "issueInvoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "INVOICE object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/INVOICE"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/acceptInvoice": {
+            "post": {
+                
+                "summary": "Accept Invoice",
+                "description": "Accept Invoice",
+                "operationId": "acceptInvoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "INVOICE ID object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/INVOICEID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/payInvoice": {
+            "post": {
+                
+                "summary": "Pay Invoice",
+                "description": "Pay Invoice",
+                "operationId": "payInvoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "INVOICE ID object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/INVOICEID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/getInvoice": {
+            "get": {
+                
+                "summary": "Get Invoice",
+                "description": "Get Invoice",
+                "operationId": "getInvoice",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "invoiceId",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/INVOICEID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/INVOICE"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/getInvoiceHistory": {
+            "get": {
+                
+                "summary": "Get Invoice History",
+                "description": "Get Invoice History",
+                "operationId": "getInvoiceHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "invoiceId",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/INVOICEID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/INVOICE"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "INVOICE": {
+            "type": "object",
+            "properties": {
+                "invoiceId": {
+                    "type": "string",
+                    "description": "Invoice ID"
+                },
+                "invoiceDate": {
+                    "type": "string",
+                    "description": "Invoice Date"
+                },
+                "supplier": {
+                    "type": "string",
+                    "description": "Supplier"
+                },
+                "customer": {
+                    "type": "string",
+                    "description": "Customer"
+                },
+                "paymentTerms": {
+                    "type": "string",
+                    "description": "Payment Terms"
+                },
+                "amount": {
+                    "type": "string",
+                    "description": "Invoice Amount"
+                },
+				"notes": {
+                    "type": "string",
+                    "description": "notes"
+                }
+            }
+        },
+        "INVOICEID": {
+            "type": "object",
+            "properties": {
+                "invoiceId": {
+                    "type": "string",
+                    "description": "Invoice Id"
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    }
+}
